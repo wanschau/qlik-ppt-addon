@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Analytics</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Segoe UI", sans-serif;
+      background: #f4f6f9;
+    }
+    #bar {
+      height: 34px;
+      background: #0b2e59;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    #bar button {
+      background: #0078d4;
+      border: none;
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    #bar button:hover { background: #005a9e; }
+    #preview-container {
+      position: relative;
+      width: 100%;
+      height: calc(100% - 34px);
+      cursor: pointer;
+      background: url('preview.jpg') no-repeat center center;
+      background-size: contain;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #overlay-badge {
+      background: rgba(11, 46, 89, 0.88);
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      opacity: 0;
+    }
+    #preview-container:hover #overlay-badge {
+      opacity: 1;
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body>
+  <div id="bar">
+    <span>Painel Travel Analytics (Copastur - Qlik Cloud)</span>
+    <div>
+      <button onclick="abrirModal()">Abrir Painel Interativo Ao Vivo</button>
+    </div>
+  </div>
+
+  <!-- Exibe o dashboard no slide e abre o modo interativo ao clicar em qualquer lugar -->
+  <div id="preview-container" onclick="abrirModal()">
+    <div id="overlay-badge">Clique para filtrar e interagir ao vivo no Qlik Cloud</div>
+  </div>
+
+  <script>
+    const TARGET_URL = "https://copastur.br.qlikcloud.com/sense/app/a37a35c7-e157-4fba-8250-eb9eeeacab46/sheet/f284c457-4030-4daf-ab49-66c4f7afdcc0/state/analysis";
+
+    Office.initialize = function () {};
+    Office.onReady(function () {});
+
+    function abrirModal() {
+      if (typeof Office !== "undefined" && Office.context && Office.context.ui) {
+        Office.context.ui.displayDialogAsync(
+          TARGET_URL,
+          { height: 90, width: 90, promptBeforeOpen: false },
+          function (res) {
+            if (res.status === Office.AsyncResultStatus.Failed) {
+              window.open(TARGET_URL, "_blank");
+            }
+          }
+        );
+      } else {
+        window.open(TARGET_URL, "_blank");
+      }
+    }
+  </script>
+</body>
+</html>
