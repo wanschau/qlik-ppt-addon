@@ -3,28 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-  <script
-    crossorigin="anonymous"
-    type="application/javascript"
-    src="https://cdn.jsdelivr.net/npm/@qlik/embed-web-components"
-    data-host="https://copastur.br.qlikcloud.com"
-    data-client-id="wanschau@lpht.com"
-    data-redirect-uri="https://wanschau.github.io/qlik-ppt-addon/oauth-callback.html"
-    data-access-token-storage="session"
-    data-auto-redirect="true">
-  </script>
   <style>
-    html, body { margin:0; height:100%; overflow:hidden; }
-    qlik-embed { display:block; width:100%; height:100%; }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%;overflow:hidden;font-family:"Segoe UI";background:#fff}
+    #bar{height:28px;background:#071f3d;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:0 10px;font-size:11px}
+    #bar button{background:#0078d4;color:#fff;border:0;padding:3px 10px;border-radius:4px;cursor:pointer}
+    iframe{width:100%;height:calc(100% - 28px);border:0}
   </style>
 </head>
 <body>
-  <qlik-embed
-    ui="analytics/sheet"
-    app-id="a37a35c7-e157-4fba-8250-eb9eeeacab46"
-    sheet-id="f284c457-4030-4daf-ab49-66e4f7afdcc0"
-    theme="Theme Copastur">
-  </qlik-embed>
-  <script>Office.onReady(() => {});</script>
+  <div id="bar">
+    <span>Travel Analytics (Copastur)</span>
+    <button onclick="expandir()">Login / Expandir</button>
+  </div>
+  <iframe id="qlik"
+    src="https://copastur.br.qlikcloud.com/single/?appid=a37a35c7-e157-4fba-8250-eb9eeeacab46&sheet=f284c457-4030-4daf-ab49-66e4f7afdcc0&opt=ctxmenu,currsel&lang=pt-BR">
+  </iframe>
+  <script>
+    const DIALOG = "https://wanschau.github.io/qlik-ppt-addon/redirect.html";
+    Office.onReady(() => {});
+    function expandir() {
+      Office.context.ui.displayDialogAsync(DIALOG, { height: 90, width: 90 }, r => {
+        const d = r.value;
+        // ao fechar a janela, recarrega o iframe para aproveitar a sessão
+        d.addEventHandler(Office.EventType.DialogEventReceived, () =>
+          document.getElementById("qlik").src += "");
+      });
+    }
+  </script>
 </body>
 </html>
