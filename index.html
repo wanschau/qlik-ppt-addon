@@ -2,101 +2,29 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Travel Analytics</title>
   <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <script
+    crossorigin="anonymous"
+    type="application/javascript"
+    src="https://cdn.jsdelivr.net/npm/@qlik/embed-web-components"
+    data-host="https://copastur.br.qlikcloud.com"
+    data-client-id="wanschau@lpht.com"
+    data-redirect-uri="https://wanschau.github.io/qlik-ppt-addon/oauth-callback.html"
+    data-access-token-storage="session"
+    data-auto-redirect="true">
+  </script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: "Segoe UI", sans-serif;
-      background: #0b2e59;
-    }
-    #bar {
-      height: 32px;
-      background: #071f3d;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 10px;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 600;
-    }
-    #bar button {
-      background: #0078d4;
-      border: none;
-      color: #fff;
-      padding: 4px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 11px;
-      font-weight: 600;
-    }
-    #bar button:hover { background: #106ebe; }
-    #container {
-      width: 100%;
-      height: calc(100% - 32px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      text-align: center;
-      padding: 20px;
-      background: linear-gradient(135deg, #0b2e59 0%, #16437a 100%);
-    }
-    h2 { font-size: 18px; margin-bottom: 8px; }
-    p { font-size: 13px; color: #cbd5e1; max-width: 420px; margin-bottom: 16px; }
-    .btn-live {
-      background: #107c41;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-    .btn-live:hover { background: #0b5a30; }
+    html, body { margin:0; height:100%; overflow:hidden; }
+    qlik-embed { display:block; width:100%; height:100%; }
   </style>
 </head>
 <body>
-  <div id="bar">
-    <span>Travel Analytics (Copastur)</span>
-    <button onclick="abrirPainel()">Abrir em Tela Cheia</button>
-  </div>
-
-  <div id="container">
-    <h2>Painel Executivo Travel Analytics</h2>
-    <p>O Qlik Cloud protege a sessão contra carregamentos embutidos. Clique abaixo para abrir o painel interativo ao vivo.</p>
-    <button class="btn-live" onclick="abrirPainel()">Abrir Painel Interativo</button>
-  </div>
-
-  <script>
-    const TARGET_URL = "https://copastur.br.qlikcloud.com/sense/app/a37a35c7-e157-4fba-8250-eb9eeeacab46/sheet/f284c457-4030-4daf-ab49-66c4f7afdcc0/state/analysis";
-
-    Office.initialize = function () {};
-    Office.onReady = function () {};
-
-    function abrirPainel() {
-      if (typeof Office !== "undefined" && Office.context && Office.context.ui) {
-        Office.context.ui.displayDialogAsync(
-          TARGET_URL,
-          { height: 90, width: 90, promptBeforeOpen: false },
-          function (res) {
-            if (res.status === Office.AsyncResultStatus.Failed) {
-              window.open(TARGET_URL, "_blank");
-            }
-          }
-        );
-      } else {
-        window.open(TARGET_URL, "_blank");
-      }
-    }
-  </script>
+  <qlik-embed
+    ui="analytics/sheet"
+    app-id="a37a35c7-e157-4fba-8250-eb9eeeacab46"
+    sheet-id="f284c457-4030-4daf-ab49-66e4f7afdcc0"
+    theme="Theme Copastur">
+  </qlik-embed>
+  <script>Office.onReady(() => {});</script>
 </body>
 </html>
