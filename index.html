@@ -5,30 +5,23 @@
   <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    html,body{height:100%;overflow:hidden;font-family:"Segoe UI";background:#fff}
-    #bar{height:28px;background:#071f3d;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:0 10px;font-size:11px}
-    #bar button{background:#0078d4;color:#fff;border:0;padding:3px 10px;border-radius:4px;cursor:pointer}
-    iframe{width:100%;height:calc(100% - 28px);border:0}
+    html,body{height:100%;font-family:"Segoe UI";background:linear-gradient(135deg,#0b2e59,#16437a);color:#fff}
+    #c{height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;text-align:center}
+    button{background:#107c41;color:#fff;border:0;padding:12px 26px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer}
   </style>
 </head>
 <body>
-  <div id="bar">
-    <span>Travel Analytics (Copastur)</span>
-    <button onclick="expandir()">Login / Expandir</button>
+  <div id="c">
+    <h2>Travel Analytics – Copastur</h2>
+    <button onclick="abrir()">Abrir Painel Interativo</button>
   </div>
-  <iframe id="qlik"
-    src="https://copastur.br.qlikcloud.com/single/?appid=a37a35c7-e157-4fba-8250-eb9eeeacab46&sheet=f284c457-4030-4daf-ab49-66e4f7afdcc0&opt=ctxmenu,currsel&lang=pt-BR">
-  </iframe>
   <script>
-    const DIALOG = "https://wanschau.github.io/qlik-ppt-addon/redirect.html";
+    const URL_QLIK = "https://copastur.br.qlikcloud.com/sense/app/a37a35c7-e157-4fba-8250-eb9eeeacab46/sheet/f284c457-4030-4daf-ab49-66e4f7afdcc0/state/analysis";
     Office.onReady(() => {});
-    function expandir() {
-      Office.context.ui.displayDialogAsync(DIALOG, { height: 90, width: 90 }, r => {
-        const d = r.value;
-        // ao fechar a janela, recarrega o iframe para aproveitar a sessão
-        d.addEventHandler(Office.EventType.DialogEventReceived, () =>
-          document.getElementById("qlik").src += "");
-      });
+    function abrir() {
+      Office.context.ui.displayDialogAsync(URL_QLIK,
+        { height: 90, width: 90, displayInIframe: false, promptBeforeOpen: false },
+        r => { if (r.status === Office.AsyncResultStatus.Failed) window.open(URL_QLIK, "_blank"); });
     }
   </script>
 </body>
